@@ -6,6 +6,7 @@ import {
   orderTypes,
 } from "../config/settings";
 import { OPERATION_TYPE } from "../constants";
+import { getQuote } from "../services/httpFetch";
 import { Button, ButtonGroup, ButtonLink } from "./Buttons";
 import { Input } from "./Input";
 
@@ -22,9 +23,18 @@ export function SwapRates() {
   const [operationType, setOperationType] = useState(operationTypes[0]);
   const [orderType, setOrderType] = useState(orderTypes[0].id);
   const [asset, setAsset] = useState(currenciesAvailable[0]);
+  const [assetQuote, setAssetQuote] = useState({});
 
   useEffect(() => {
-    // fetch initial values
+    setAssetQuote({ quote: "" });
+
+    (async function () {
+      const quoteValues = await getQuote(
+        asset,
+        operationType.name.toLocaleLowerCase()
+      );
+      setAssetQuote(quoteValues);
+    })();
   }, [asset, operationType]);
 
   const handleSubmit = (event) => {
@@ -75,7 +85,13 @@ export function SwapRates() {
         </Subheader>
       </header>
       <form onSubmit={handleSubmit}>
-        <Input label="Price" name="asset_price" asset="ARS" disabled={true} />
+        <Input
+          label="Price"
+          name="asset_price"
+          asset="ARS"
+          disabled={true}
+          value={assetQuote.quote}
+        />
         <Input label="Amount" name="amount" asset={asset} value="" />
         <Input label="Total" name="amount" asset="ARS" value="" />
         <SubmitButton isBuy={operationType.id === OPERATION_TYPE.BUY}>

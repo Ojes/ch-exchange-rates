@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const InputWrapper = styled.div`
@@ -36,7 +36,11 @@ const InputWrapper = styled.div`
 `;
 
 export function Input({ value, label, name, asset, disabled }) {
-  const [inputValue, setInputValue] = useState(value);
+  const [inputValue, setInputValue] = useState();
+
+  useEffect(() => {
+    setInputValue(value);
+  }, [value]);
 
   const handleOnlyNumber = (event) => {
     const { value } = event.target;
