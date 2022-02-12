@@ -1,7 +1,12 @@
+import { SwapRates } from "./components/SwapRates";
 import { TransactionProvider } from "./context/transaction.context";
 
 function App() {
-  return <TransactionProvider>Initial</TransactionProvider>;
+  return (
+    <TransactionProvider>
+      <SwapRates></SwapRates>
+    </TransactionProvider>
+  );
 }
 
 export default App;
