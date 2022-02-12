@@ -1,7 +1,7 @@
-import "./App.css";
+import { TransactionProvider } from "./context/transaction.context";
 
 function App() {
-  return <div className="App"></div>;
+  return <TransactionProvider>Initial</TransactionProvider>;
 }
 
 export default App;
