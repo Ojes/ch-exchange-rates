@@ -17,9 +17,9 @@ export function Orders() {
   const [orderList, setOrderList] = useState([]);
   const { orders } = useContext(TransactionContext);
 
-  // useEffect(() => {
-  //   setOrderList(orders.filter((order) => order.state === ORDER_STATE.OPEN));
-  // }, [orders]);
+  useEffect(() => {
+    setOrderList(orders.filter((order) => order.state === orderState.id));
+  }, [orders, orderState.id]);
 
   return (
     <section>
@@ -33,7 +33,7 @@ export function Orders() {
           ></OrderTab>
         ))}
       </OrdersWrapper>
-      <OrderList source={orders}></OrderList>
+      <OrderList source={orderList}></OrderList>
     </section>
   );
 }

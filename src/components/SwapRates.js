@@ -26,7 +26,7 @@ export function SwapRates() {
   const [assetQuote, setAssetQuote] = useState({ quote: "" });
 
   useEffect(() => {
-    // setAssetQuote({ quote: "" });
+    setAssetQuote({ quote: "" });
 
     (async function () {
       const quoteValues = await getQuote(
