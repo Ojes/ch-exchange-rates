@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { orderStates } from "../config/settings";
+import { ORDER_STATE } from "../constants";
+import { TransactionContext } from "../context/transaction.context";
 import { OrderList } from "./OrderList";
 import { OrderTab } from "./OrderTab";
 
@@ -12,6 +14,13 @@ const OrdersWrapper = styled.ul`
 
 export function Orders() {
   const [orderState, setOrderState] = useState(orderStates[0]);
+  const [orderList, setOrderList] = useState([]);
+  const { orders } = useContext(TransactionContext);
+
+  // useEffect(() => {
+  //   setOrderList(orders.filter((order) => order.state === ORDER_STATE.OPEN));
+  // }, [orders]);
+
   return (
     <section>
       <OrdersWrapper>
@@ -24,21 +33,7 @@ export function Orders() {
           ></OrderTab>
         ))}
       </OrdersWrapper>
-      <OrderList
-        source={[
-          {
-            orderState: { name: "FILLED", id: 0 },
-            operationType: { name: "BUY", id: 0 },
-            orderType: { name: "Limit", id: 0 },
-            amount: 1000,
-            total: 200,
-            from: "BTC",
-            to: "ARS",
-            date: Date.now(),
-            id: "1",
-          },
-        ]}
-      ></OrderList>
+      <OrderList source={orders}></OrderList>
     </section>
   );
 }

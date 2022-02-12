@@ -35,8 +35,8 @@ const InputWrapper = styled.div`
   }
 `;
 
-export function Input({ value, label, name, asset, disabled }) {
-  const [inputValue, setInputValue] = useState();
+export function Input({ value, label, name, asset, disabled = false }) {
+  const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
     setInputValue(value);

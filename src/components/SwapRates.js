@@ -23,10 +23,10 @@ export function SwapRates() {
   const [operationType, setOperationType] = useState(operationTypes[0]);
   const [orderType, setOrderType] = useState(orderTypes[0].id);
   const [asset, setAsset] = useState(currenciesAvailable[0]);
-  const [assetQuote, setAssetQuote] = useState({});
+  const [assetQuote, setAssetQuote] = useState({ quote: "" });
 
   useEffect(() => {
-    setAssetQuote({ quote: "" });
+    // setAssetQuote({ quote: "" });
 
     (async function () {
       const quoteValues = await getQuote(
@@ -39,7 +39,11 @@ export function SwapRates() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    const { amount, total } = event.target.elements;
     console.log("create transaction");
+    if (amount >= assetQuote.cryptoMinAmount) {
+      // Create transaction
+    }
   };
 
   return (
