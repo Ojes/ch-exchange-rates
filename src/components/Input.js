@@ -55,6 +55,7 @@ export function Input({ value, label, name, asset, disabled }) {
       <label htmlFor={`${name}-${label}`}>{label}</label>
       <input
         type="text"
+        autoComplete="off"
         id={`${name}-${label}`}
         name={name}
         disabled={disabled}
