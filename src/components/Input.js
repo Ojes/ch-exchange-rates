@@ -11,9 +11,9 @@ const InputWrapper = styled.div`
   height: 40px;
   line-height: 40px;
   margin: 16px 0px 8px;
-  padding: 0 16px;
   min-width: 0px;
   overflow: hidden;
+  padding: 0 16px;
   width: 100%;
 
   > label {
@@ -27,9 +27,9 @@ const InputWrapper = styled.div`
     flex-grow: 2;
     font-size: 14px;
     height: 100%;
+    outline: none;
     padding-left: 4px;
     padding-right: 4px;
-    outline: none;
     text-align: right;
     width: 100%;
   }

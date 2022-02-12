@@ -8,7 +8,7 @@ export const ORDER_TYPE = {
   MARKET: 1,
 };
 
-export const TRANSACTION_TYPE = {
+export const ORDER_STATE = {
   OPEN: 0,
   FILLED: 1,
   CANCELLED: 2,
