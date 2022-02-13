@@ -3,8 +3,11 @@ import styled from "styled-components";
 
 const InputWrapper = styled.div`
   align-items: flex-stretch;
-  background-color: rgba(43, 47, 54, 0.9);
+  background-color: ${({ disabled }) =>
+    disabled ? "trasparent" : "rgba(43, 47, 54, 0.9)"};
   border-radius: 4px;
+  border-bottom: ${({ disabled }) =>
+    disabled ? "1px solid rgba(43, 47, 54, 0.9)" : "none"};
   box-sizing: border-box;
   color: rgb(222 236 233);
   display: flex;
@@ -32,10 +35,14 @@ const InputWrapper = styled.div`
     padding-right: 4px;
     text-align: right;
     width: 100%;
+
+    &:disabled {
+      backgound: transparent;
+    }
   }
 `;
 
-export function Input({ value, label, name, asset, disabled = false }) {
+export function Input({ value, label, name, asset, disabled, onChangeValue }) {
   const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
@@ -52,10 +59,13 @@ export function Input({ value, label, name, asset, disabled = false }) {
   const handleInputChange = (event) => {
     const { value } = event.target;
     setInputValue(value);
+    if (onChangeValue) {
+      onChangeValue(value);
+    }
   };
 
   return (
-    <InputWrapper>
+    <InputWrapper disabled={disabled}>
       <label htmlFor={`${name}-${label}`}>{label}</label>
       <input
         type="text"

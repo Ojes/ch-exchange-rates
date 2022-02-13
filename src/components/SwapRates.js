@@ -31,6 +31,8 @@ export function SwapRates() {
   const [operationType, setOperationType] = useState(OPERATION_TYPE.SELL);
   const [orderType, setOrderType] = useState(ORDER_TYPE.LIMIT);
   const [asset, setAsset] = useState(currenciesAvailable[0]);
+  const [amount, setAmount] = useState(0);
+  const [price, setPrice] = useState(0);
   const [assetQuote, setAssetQuote] = useState({ quote: "" });
   const { openOrder } = useContext(TransactionContext);
 
@@ -52,6 +54,17 @@ export function SwapRates() {
       });
     }
   }, [socket, asset, operationType]);
+
+  useEffect(() => {
+    // Reset inputs if operation values were change
+    setAmount(0);
+    setPrice(0);
+  }, [orderType, operationType, asset]);
+
+  const handleCalculateAmount = (value) => {
+    setAmount((value / assetQuote.quote).toFixed(8));
+    setPrice(value);
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -121,8 +134,20 @@ export function SwapRates() {
           disabled={true}
           value={assetQuote.quote}
         />
-        <Input label="Amount" name="amount" asset={asset} value="" />
-        <Input label="Total" name="amount" asset="ARS" value="" />
+        <Input
+          label="Amount"
+          name="amount"
+          asset={asset}
+          value={amount}
+          disabled={true}
+        />
+        <Input
+          label="Total"
+          name="price"
+          asset="ARS"
+          value={price}
+          onChangeValue={handleCalculateAmount}
+        />
         <SubmitButton isBuy={operationType === OPERATION_TYPE.BUY}>
           {getOperationNameById(operationType)} {asset}
         </SubmitButton>
