@@ -7,6 +7,9 @@ import {
 } from "../constants";
 import { getQuote } from "./httpFetch";
 
+const OPEN_ORDER_DELAY = 60000;
+const QUOTE_RECALL_TIME = 5000;
+
 export function Socket() {
   let _listeners = {};
   let _timerId;
@@ -67,7 +70,7 @@ export function Socket() {
         type: ORDER_STATE.FILLED,
         data: newOrder,
       });
-    }, 5000);
+    }, OPEN_ORDER_DELAY);
   }
 
   async function simulateLiveQuote({ asset, orderType }) {
@@ -79,6 +82,6 @@ export function Socket() {
 
     _timerId = setTimeout(() => {
       simulateLiveQuote({ asset, orderType });
-    }, 5000);
+    }, QUOTE_RECALL_TIME);
   }
 }

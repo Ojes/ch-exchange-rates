@@ -34,11 +34,6 @@ const InputWrapper = styled.div`
     padding-left: 4px;
     padding-right: 4px;
     text-align: right;
-    width: 100%;
-
-    &:disabled {
-      backgound: transparent;
-    }
   }
 `;
 
