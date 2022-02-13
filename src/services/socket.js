@@ -53,7 +53,6 @@ export function Socket() {
     const date = new Date();
     const newOrder = { ...order, id, date };
     const isLimit = newOrder.orderType === ORDER_TYPE.LIMIT;
-    console.log(isLimit);
 
     if (isLimit) {
       checkOrder(newOrder);
