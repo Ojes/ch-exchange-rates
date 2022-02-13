@@ -12,15 +12,23 @@ export function InputRate({ asset, operationType, orderType, quote }) {
     setPrice(0);
   }, [orderType, operationType, asset]);
 
+  useEffect(() => {
+    if (quote) {
+      if (operationType === OPERATION_TYPE.BUY) {
+        setAmount((price / quote).toFixed(8));
+      } else {
+        setPrice((quote * amount).toFixed(2));
+      }
+    }
+  }, [price, amount, quote, operationType]);
+
   const handleCalculateAmount = (value) => {
     if (quote > 0) {
-      setAmount((value / quote).toFixed(8));
       setPrice(value);
     }
   };
 
   const handleCalculatePrice = (value) => {
-    setPrice((quote * value).toFixed(2));
     setAmount(value);
   };
 

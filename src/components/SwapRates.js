@@ -56,7 +56,7 @@ export function SwapRates() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const [, amount, total] = event.target.elements;
+    const [, amount, price] = event.target.elements;
 
     openOrder({
       operationType,
@@ -66,7 +66,7 @@ export function SwapRates() {
       from: asset,
       to: "ARS",
       amount: amount.value,
-      total: total.value,
+      price: price.value,
     });
   };
 

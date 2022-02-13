@@ -7,7 +7,7 @@ import {
 } from "../constants";
 import { getQuote } from "./httpFetch";
 
-const OPEN_ORDER_DELAY = 6000;
+const OPEN_ORDER_DELAY = 60000;
 const QUOTE_RECALL_TIME = 5000;
 
 export function Socket() {

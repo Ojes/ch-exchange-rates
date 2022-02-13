@@ -46,16 +46,15 @@ const TagWrapper = styled.div`
 `;
 
 export function OrderItem({
-  orderState,
   operationType,
   orderType,
   amount,
-  total,
+  price,
   date,
   from,
   to,
 }) {
-  const totalFormatted = (+total).toLocaleString("es-AR", {
+  const priceFormatted = (+price).toLocaleString("es-AR", {
     maximumFractionDigits: 2,
   });
 
@@ -82,8 +81,8 @@ export function OrderItem({
         <RowValueWrapper>{amountFormatted}</RowValueWrapper>
       </RowWrapper>
       <RowWrapper>
-        <RowLabelWrapper>Total</RowLabelWrapper>
-        <RowValueWrapper>{totalFormatted}</RowValueWrapper>
+        <RowLabelWrapper>Price</RowLabelWrapper>
+        <RowValueWrapper>{priceFormatted}</RowValueWrapper>
       </RowWrapper>
       <RowWrapper>
         <RowLabelWrapper>Fecha</RowLabelWrapper>
