@@ -53,9 +53,9 @@ export function Input({ value, label, name, asset, disabled, onChangeValue }) {
 
   const handleInputChange = (event) => {
     const { value } = event.target;
-    setInputValue(value);
+    setInputValue(Math.abs(value));
     if (onChangeValue) {
-      onChangeValue(value);
+      onChangeValue(Math.abs(value));
     }
   };
 

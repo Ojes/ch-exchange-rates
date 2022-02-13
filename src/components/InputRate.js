@@ -13,8 +13,10 @@ export function InputRate({ asset, operationType, orderType, quote }) {
   }, [orderType, operationType, asset]);
 
   const handleCalculateAmount = (value) => {
-    setAmount((value / quote).toFixed(8));
-    setPrice(value);
+    if (quote > 0) {
+      setAmount((value / quote).toFixed(8));
+      setPrice(value);
+    }
   };
 
   const handleCalculatePrice = (value) => {
