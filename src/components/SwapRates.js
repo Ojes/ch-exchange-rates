@@ -58,18 +58,16 @@ export function SwapRates() {
     event.preventDefault();
     const [, amount, total] = event.target.elements;
 
-    if (amount.value >= assetQuote.cryptoMinAmount) {
-      openOrder({
-        operationType,
-        orderType,
-        asset,
-        assetQuote,
-        from: asset,
-        to: "ARS",
-        amount: amount.value,
-        total: total.value,
-      });
-    }
+    openOrder({
+      operationType,
+      orderType,
+      asset,
+      assetQuote,
+      from: asset,
+      to: "ARS",
+      amount: amount.value,
+      total: total.value,
+    });
   };
 
   return (

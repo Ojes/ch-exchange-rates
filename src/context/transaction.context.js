@@ -18,12 +18,20 @@ const reducer = (state, action) => {
       };
 
     case ORDER_STATE.FILLED:
-      orders = state.orders.map((order) => {
-        if (order.id === action.payload.id) {
-          return { ...action.payload, orderState: ORDER_STATE.FILLED };
-        }
-        return order;
-      });
+      const order = state.orders.find((ord) => ord.id === action.payload.id);
+      if (order) {
+        orders = state.orders.map((order) => {
+          if (order.id === action.payload.id) {
+            return { ...action.payload, orderState: ORDER_STATE.FILLED };
+          }
+          return order;
+        });
+      } else {
+        orders = [
+          ...state.orders,
+          { ...action.payload, orderState: ORDER_STATE.FILLED },
+        ];
+      }
 
       return {
         ...state,

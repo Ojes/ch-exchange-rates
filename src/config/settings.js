@@ -11,8 +11,8 @@ export const orderTypes = [
 ];
 
 export const orderStates = [
-  { name: "Open Orders", id: ORDER_STATE.OPEN },
-  { name: "Ordern History", id: ORDER_STATE.FILLED },
+  { name: "Order Book", id: ORDER_STATE.OPEN },
+  { name: "Order History", id: ORDER_STATE.FILLED },
 ];
 
 export const currenciesAvailable = ["BTC", "ETH", "USDC"];

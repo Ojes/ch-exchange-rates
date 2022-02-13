@@ -7,7 +7,7 @@ import {
 } from "../constants";
 import { getQuote } from "./httpFetch";
 
-const OPEN_ORDER_DELAY = 60000;
+const OPEN_ORDER_DELAY = 6000;
 const QUOTE_RECALL_TIME = 5000;
 
 export function Socket() {
@@ -53,6 +53,7 @@ export function Socket() {
     const date = new Date();
     const newOrder = { ...order, id, date };
     const isLimit = newOrder.orderType === ORDER_TYPE.LIMIT;
+    console.log(isLimit);
 
     if (isLimit) {
       checkOrder(newOrder);
