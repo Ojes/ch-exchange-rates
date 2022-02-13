@@ -1,5 +1,7 @@
 import styled from "styled-components";
+import { orderStates } from "../config/settings";
 import { OPERATION_TYPE } from "../constants";
+import { geOrderStateNameById } from "../helpers";
 
 const OrderItemWrapper = styled.div`
   display: flex;
@@ -53,7 +55,7 @@ export function OrderItem({
   from,
   to,
 }) {
-  const totalFormatted = total.toLocaleString("es-AR", {
+  const totalFormatted = (+total).toLocaleString("es-AR", {
     maximumFractionDigits: 2,
   });
 
@@ -61,7 +63,7 @@ export function OrderItem({
     dateStyle: "short",
   });
 
-  const amountFormatted = amount.toFixed(5);
+  const amountFormatted = (+amount).toFixed(5);
   return (
     <OrderItemWrapper>
       <RowWrapper>
@@ -73,7 +75,7 @@ export function OrderItem({
             {operationType.name}/{orderType.name}
           </OperationWrapper>
         </div>
-        <TagWrapper>{orderState.name}</TagWrapper>
+        <TagWrapper>{geOrderStateNameById(orderState)}</TagWrapper>
       </RowWrapper>
       <RowWrapper>
         <RowLabelWrapper>Amount</RowLabelWrapper>

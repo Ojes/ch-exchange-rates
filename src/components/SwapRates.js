@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import {
   currenciesAvailable,
@@ -6,6 +6,7 @@ import {
   orderTypes,
 } from "../config/settings";
 import { OPERATION_TYPE } from "../constants";
+import { TransactionContext } from "../context/transaction.context";
 import { getQuote } from "../services/httpFetch";
 import { Button, ButtonGroup, ButtonLink } from "./Buttons";
 import { Input } from "./Input";
@@ -21,9 +22,10 @@ const SubmitButton = styled(Button)`
 
 export function SwapRates() {
   const [operationType, setOperationType] = useState(operationTypes[0]);
-  const [orderType, setOrderType] = useState(orderTypes[0].id);
+  const [orderType, setOrderType] = useState(orderTypes[0]);
   const [asset, setAsset] = useState(currenciesAvailable[0]);
   const [assetQuote, setAssetQuote] = useState({ quote: "" });
+  const { openOrder } = useContext(TransactionContext);
 
   useEffect(() => {
     setAssetQuote({ quote: "" });
@@ -39,10 +41,20 @@ export function SwapRates() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const { amount, total } = event.target.elements;
-    console.log("create transaction");
-    if (amount >= assetQuote.cryptoMinAmount) {
+    const [, amount, total] = event.target.elements;
+
+    console.log(amount.value, assetQuote.cryptoMinAmount, event.target);
+
+    if (amount.value >= assetQuote.cryptoMinAmount) {
       // Create transaction
+      openOrder({
+        operationType,
+        orderType,
+        asset,
+        assetQuote,
+        amount: amount.value,
+        total: total.value,
+      });
     }
   };
 
@@ -68,7 +80,7 @@ export function SwapRates() {
                 key={`order-type-${id}`}
                 type="button"
                 className={orderType === id ? "selected" : ""}
-                onClick={() => setOrderType(id)}
+                onClick={() => setOrderType({ name, id })}
               >
                 {name}
               </ButtonLink>

@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { orderStates } from "../config/settings";
-import { ORDER_STATE } from "../constants";
 import { TransactionContext } from "../context/transaction.context";
 import { OrderList } from "./OrderList";
 import { OrderTab } from "./OrderTab";
@@ -13,13 +12,13 @@ const OrdersWrapper = styled.ul`
 `;
 
 export function Orders() {
-  const [orderState, setOrderState] = useState(orderStates[0]);
+  const [orderState, setOrderState] = useState(orderStates[0].id);
   const [orderList, setOrderList] = useState([]);
   const { orders } = useContext(TransactionContext);
 
   useEffect(() => {
-    setOrderList(orders.filter((order) => order.state === orderState.id));
-  }, [orders, orderState.id]);
+    setOrderList(orders.filter((order) => order.orderState === orderState));
+  }, [orders, orderState]);
 
   return (
     <section>
@@ -28,8 +27,8 @@ export function Orders() {
           <OrderTab
             title={name}
             key={`order-state-${id}`}
-            selected={orderState.id === id}
-            onClick={() => setOrderState({ name, id })}
+            selected={orderState === id}
+            onClick={() => setOrderState(id)}
           ></OrderTab>
         ))}
       </OrdersWrapper>
