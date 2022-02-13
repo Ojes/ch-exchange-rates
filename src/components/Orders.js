@@ -18,9 +18,10 @@ export function Orders() {
   const { orders } = useContext(TransactionContext);
 
   useEffect(() => {
+    const orderProp = orderState === ORDER_BOOK.OPEN ? "price" : "date";
     const list = orders
       .filter((order) => order.orderState === orderState)
-      .sort((left, right) => right.price - left.price);
+      .sort((left, right) => right[orderProp] - left[orderProp]);
     setOrderList(list);
   }, [orders, orderState]);
 

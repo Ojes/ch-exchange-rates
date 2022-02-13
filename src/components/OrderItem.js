@@ -58,9 +58,7 @@ export function OrderItem({
     maximumFractionDigits: 2,
   });
 
-  const dateFormatted = new Date(date).toLocaleString("es-AR", {
-    dateStyle: "short",
-  });
+  const dateFormatted = new Date(date).toISOString();
 
   const amountFormatted = (+amount).toFixed(5);
   return (
