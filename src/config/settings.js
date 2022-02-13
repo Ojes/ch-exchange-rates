@@ -1,8 +1,8 @@
 import { OPERATION_TYPE, ORDER_TYPE, ORDER_STATE } from "../constants";
 
 export const operationTypes = [
-  { name: "Buy", id: OPERATION_TYPE.BUY },
   { name: "Sell", id: OPERATION_TYPE.SELL },
+  { name: "Buy", id: OPERATION_TYPE.BUY },
 ];
 
 export const orderTypes = [

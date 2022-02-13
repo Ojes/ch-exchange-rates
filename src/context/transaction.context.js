@@ -1,29 +1,26 @@
-import React, { useReducer } from "react";
-import { ORDER_STATE } from "../constants";
-import {
-  connectToSimulatedSocket,
-  createNewOrder,
-} from "../services/httpFetch";
+import React, { useEffect, useReducer, useState } from "react";
+import { ORDER_STATE, SOCKET_CONNECTION, SOCKET_MESSAGE } from "../constants";
+import { Socket } from "../services/socket";
 
 export const TransactionContext = React.createContext({});
 const reducer = (state, action) => {
   let orders;
-  console.table(action);
+
   switch (action.type) {
-    case "OPEN_ORDER":
+    case ORDER_STATE.OPEN:
       orders = [
         ...state.orders,
-        { ...action.payload, orderState: ORDER_STATE.OPENED },
+        { ...action.payload, orderState: ORDER_STATE.OPEN },
       ];
       return {
         ...state,
         orders,
       };
 
-    case "FILL_ORDER":
+    case ORDER_STATE.FILLED:
       orders = state.orders.map((order) => {
-        if (order.id === action.payload) {
-          return { ...order, orderState: ORDER_STATE.FILLED };
+        if (order.id === action.payload.id) {
+          return { ...action.payload, orderState: ORDER_STATE.FILLED };
         }
         return order;
       });
@@ -33,18 +30,6 @@ const reducer = (state, action) => {
         orders,
       };
 
-    case "CANCEL_ORDER":
-      orders = state.orders.map((order) => {
-        if (order.id === action.payload) {
-          return { ...order, orderState: ORDER_STATE.CANCELLED };
-        }
-        return order;
-      });
-
-      return {
-        ...state,
-        orders,
-      };
     default:
       return state;
   }
@@ -55,39 +40,27 @@ const initialState = {
 };
 
 export const TransactionProvider = ({ children }) => {
+  const [socket, setSocket] = useState();
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const openOrder = (transaction) => {
-    (async function () {
-      const newOrder = await createNewOrder(transaction);
-      connectToSimulatedSocket(newOrder).then((orderId) => {
-        fillOrder(orderId);
-      });
+  useEffect(() => {
+    const socket = new Socket();
+    socket.connect(SOCKET_CONNECTION.ORDER, ({ type, data }) => {
       dispatch({
-        type: "OPEN_ORDER",
-        payload: newOrder,
+        type,
+        payload: data,
       });
-    })();
-  };
-
-  const fillOrder = (orderId) => {
-    dispatch({
-      type: "FILL_ORDER",
-      payload: orderId,
     });
-  };
+    setSocket(socket);
+    return socket.disconnect;
+  }, []);
 
-  const cancelOrder = (orderId) => {
-    dispatch({
-      type: "CANCEL_ORDER",
-      payload: orderId,
-    });
+  const openOrder = (transaction) => {
+    socket.message(SOCKET_MESSAGE.CREATE_ORDER, transaction);
   };
 
   return (
-    <TransactionContext.Provider
-      value={{ openOrder, fillOrder, cancelOrder, orders: state.orders }}
-    >
+    <TransactionContext.Provider value={{ openOrder, orders: state.orders }}>
       {children}
     </TransactionContext.Provider>
   );

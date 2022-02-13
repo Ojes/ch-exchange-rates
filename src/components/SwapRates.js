@@ -5,9 +5,15 @@ import {
   operationTypes,
   orderTypes,
 } from "../config/settings";
-import { OPERATION_TYPE } from "../constants";
+import {
+  OPERATION_TYPE,
+  ORDER_TYPE,
+  SOCKET_CONNECTION,
+  SOCKET_MESSAGE,
+} from "../constants";
 import { TransactionContext } from "../context/transaction.context";
-import { getQuote } from "../services/httpFetch";
+import { getOperationNameById } from "../helpers";
+import { Socket } from "../services/socket";
 import { Button, ButtonGroup, ButtonLink } from "./Buttons";
 import { Input } from "./Input";
 
@@ -21,37 +27,44 @@ const SubmitButton = styled(Button)`
 `;
 
 export function SwapRates() {
-  const [operationType, setOperationType] = useState(operationTypes[0]);
-  const [orderType, setOrderType] = useState(orderTypes[0]);
+  const [socket, setSocket] = useState();
+  const [operationType, setOperationType] = useState(OPERATION_TYPE.SELL);
+  const [orderType, setOrderType] = useState(ORDER_TYPE.LIMIT);
   const [asset, setAsset] = useState(currenciesAvailable[0]);
   const [assetQuote, setAssetQuote] = useState({ quote: "" });
   const { openOrder } = useContext(TransactionContext);
 
   useEffect(() => {
-    setAssetQuote({ quote: "" });
+    const quoteSocket = new Socket();
+    quoteSocket.connect(SOCKET_CONNECTION.QUOTE, ({ type, data }) => {
+      setAssetQuote(data);
+    });
+    setSocket(quoteSocket);
+    return quoteSocket.disconnect;
+  }, []);
 
-    (async function () {
-      const quoteValues = await getQuote(
+  useEffect(() => {
+    setAssetQuote({ quote: "" });
+    if (socket && asset) {
+      socket.message(SOCKET_MESSAGE.GET_QUOTE, {
         asset,
-        operationType.name.toLocaleLowerCase()
-      );
-      setAssetQuote(quoteValues);
-    })();
-  }, [asset, operationType]);
+        orderType: getOperationNameById(operationType).toLocaleLowerCase(),
+      });
+    }
+  }, [socket, asset, operationType]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const [, amount, total] = event.target.elements;
 
-    console.log(amount.value, assetQuote.cryptoMinAmount, event.target);
-
     if (amount.value >= assetQuote.cryptoMinAmount) {
-      // Create transaction
       openOrder({
         operationType,
         orderType,
         asset,
         assetQuote,
+        from: asset,
+        to: "ARS",
         amount: amount.value,
         total: total.value,
       });
@@ -66,8 +79,8 @@ export function SwapRates() {
             <Button
               key={`operation-type-${id}`}
               isBuy={id === OPERATION_TYPE.BUY}
-              className={operationType.id === id ? "selected" : ""}
-              onClick={() => setOperationType({ name, id })}
+              className={operationType === id ? "selected" : ""}
+              onClick={() => setOperationType(id)}
             >
               {name}
             </Button>
@@ -80,7 +93,7 @@ export function SwapRates() {
                 key={`order-type-${id}`}
                 type="button"
                 className={orderType === id ? "selected" : ""}
-                onClick={() => setOrderType({ name, id })}
+                onClick={() => setOrderType(id)}
               >
                 {name}
               </ButtonLink>
@@ -110,8 +123,8 @@ export function SwapRates() {
         />
         <Input label="Amount" name="amount" asset={asset} value="" />
         <Input label="Total" name="amount" asset="ARS" value="" />
-        <SubmitButton isBuy={operationType.id === OPERATION_TYPE.BUY}>
-          {operationType.name} {asset}
+        <SubmitButton isBuy={operationType === OPERATION_TYPE.BUY}>
+          {getOperationNameById(operationType)} {asset}
         </SubmitButton>
       </form>
     </section>

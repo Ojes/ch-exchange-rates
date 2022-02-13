@@ -1,7 +1,6 @@
 import styled from "styled-components";
-import { orderStates } from "../config/settings";
 import { OPERATION_TYPE } from "../constants";
-import { geOrderStateNameById } from "../helpers";
+import { getOperationNameById, getOrderNameById } from "../helpers";
 
 const OrderItemWrapper = styled.div`
   display: flex;
@@ -23,9 +22,10 @@ const AssetWrapper = styled.span`
 const RowWrapper = styled.div`
   display: flex;
   flex: 1;
+  font-size: 12px;
   height: 40px;
   justify-content: space-between;
-  margin: 8px;
+  margin: 3px;
 `;
 
 const RowLabelWrapper = styled.div`
@@ -71,11 +71,11 @@ export function OrderItem({
           <AssetWrapper>
             {from} / {to}
           </AssetWrapper>
-          <OperationWrapper isBuy={operationType.id === OPERATION_TYPE.BUY}>
-            {operationType.name}/{orderType.name}
+          <OperationWrapper isBuy={operationType === OPERATION_TYPE.BUY}>
+            {getOperationNameById(operationType)}/{getOrderNameById(orderType)}
           </OperationWrapper>
         </div>
-        <TagWrapper>{geOrderStateNameById(orderState)}</TagWrapper>
+        <TagWrapper>Filled</TagWrapper>
       </RowWrapper>
       <RowWrapper>
         <RowLabelWrapper>Amount</RowLabelWrapper>

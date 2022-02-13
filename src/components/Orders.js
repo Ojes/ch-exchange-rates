@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { orderStates } from "../config/settings";
+import { ORDER_BOOK } from "../constants";
 import { TransactionContext } from "../context/transaction.context";
 import { OrderList } from "./OrderList";
 import { OrderTab } from "./OrderTab";
@@ -12,11 +13,12 @@ const OrdersWrapper = styled.ul`
 `;
 
 export function Orders() {
-  const [orderState, setOrderState] = useState(orderStates[0].id);
+  const [orderState, setOrderState] = useState(ORDER_BOOK.OPEN);
   const [orderList, setOrderList] = useState([]);
   const { orders } = useContext(TransactionContext);
 
   useEffect(() => {
+    console.log("ORDES", orders);
     setOrderList(orders.filter((order) => order.orderState === orderState));
   }, [orders, orderState]);
 
