@@ -18,8 +18,10 @@ export function Orders() {
   const { orders } = useContext(TransactionContext);
 
   useEffect(() => {
-    console.log("ORDES", orders);
-    setOrderList(orders.filter((order) => order.orderState === orderState));
+    const list = orders
+      .filter((order) => order.orderState === orderState)
+      .sort((left, right) => right.price - left.price);
+    setOrderList(list);
   }, [orders, orderState]);
 
   return (
