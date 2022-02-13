@@ -38,8 +38,7 @@ export function SwapRates() {
   useEffect(() => {
     const quoteSocket = new Socket();
     quoteSocket.connect(SOCKET_CONNECTION.QUOTE, ({ type, data }) => {
-      // Increment the price, to get 1.5% of Fee
-      const quote = (data.quote * 1.015).toFixed(2);
+      const quote = data.quote.toFixed(2);
       setAssetQuote({ quote });
     });
     setSocket(quoteSocket);
