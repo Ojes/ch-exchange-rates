@@ -1,6 +1,6 @@
-import React, { useEffect, useReducer, useRef } from "react";
+import React, { useReducer } from "react";
 import { ORDER_STATE, SOCKET_CONNECTION, SOCKET_MESSAGE } from "../constants";
-import { DummySocket } from "../services/socket";
+import { useSocket } from "../hooks/useSocket";
 
 export const TransactionContext = React.createContext({});
 const reducer = (state, action) => {
@@ -48,21 +48,19 @@ const initialState = {
 };
 
 export const TransactionProvider = ({ children }) => {
-  const socket = useRef(DummySocket);
   const [state, dispatch] = useReducer(reducer, initialState);
-
-  useEffect(() => {
-    socket.current.connect(SOCKET_CONNECTION.ORDER, ({ type, data }) => {
+  const { message } = useSocket({
+    connectionName: SOCKET_CONNECTION.ORDER,
+    subscribe: ({ type, data }) => {
       dispatch({
         type,
         payload: data,
       });
-    });
-    return socket.current.disconnect;
-  }, []);
+    },
+  });
 
   const openOrder = (transaction) => {
-    socket.current.message(SOCKET_MESSAGE.CREATE_ORDER, transaction);
+    message(SOCKET_MESSAGE.CREATE_ORDER, transaction);
   };
 
   return (

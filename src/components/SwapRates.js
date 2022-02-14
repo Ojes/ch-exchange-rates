@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import {
   currenciesAvailable,
@@ -13,7 +13,7 @@ import {
 } from "../constants";
 import { TransactionContext } from "../context/transaction.context";
 import { getOperationNameById } from "../helpers";
-import { DummySocket, Socket } from "../services/socket";
+import { useSocket } from "../hooks/useSocket";
 import { Button, ButtonGroup, ButtonLink } from "./Buttons";
 import { Input } from "./Input";
 import { InputRate } from "./InputRate";
@@ -28,29 +28,28 @@ const SubmitButton = styled(Button)`
 `;
 
 export function SwapRates() {
-  const socket = useRef(DummySocket);
   const [operationType, setOperationType] = useState(OPERATION_TYPE.BUY);
   const [orderType, setOrderType] = useState(ORDER_TYPE.LIMIT);
   const [asset, setAsset] = useState(currenciesAvailable[0]);
   const [assetQuote, setAssetQuote] = useState({ quote: "" });
   const { openOrder } = useContext(TransactionContext);
-
-  useEffect(() => {
-    socket.current.connect(SOCKET_CONNECTION.QUOTE, ({ type, data }) => {
+  const { message } = useSocket({
+    connectionName: SOCKET_CONNECTION.QUOTE,
+    subscribe: ({ data }) => {
       const quote = data.quote.toFixed(2);
       setAssetQuote({ quote });
-    });
-    return socket.current.disconnect;
-  }, []);
+    },
+  });
 
   useEffect(() => {
     setAssetQuote({ quote: "" });
     if (asset) {
-      socket.current.message(SOCKET_MESSAGE.GET_QUOTE, {
+      message(SOCKET_MESSAGE.GET_QUOTE, {
         asset,
         orderType: getOperationNameById(operationType).toLocaleLowerCase(),
       });
     }
+    // eslint-disable-next-line
   }, [asset, operationType]);
 
   const handleSubmit = (event) => {
