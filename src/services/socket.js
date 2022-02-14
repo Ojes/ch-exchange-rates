@@ -8,18 +8,20 @@ import {
 import { getQuote } from "./httpFetch";
 
 const OPEN_ORDER_DELAY = 60000;
-const QUOTE_RECALL_TIME = 10000;
+const QUOTE_RECALL_TIME = 30000;
 
 export function Socket() {
   let _listeners = {};
   let _timerId;
 
   this.connect = (message, callback) => {
-    let listeners = _listeners[message];
-    if (!listeners) {
-      listeners = _listeners[message] = [];
+    if (_listeners) {
+      let listeners = _listeners[message];
+      if (!listeners) {
+        listeners = _listeners[message] = [];
+      }
+      listeners.push(callback);
     }
-    listeners.push(callback);
   };
 
   this.message = (msg, data) => {
