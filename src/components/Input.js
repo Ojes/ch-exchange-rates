@@ -46,7 +46,7 @@ export function Input({ value, label, name, asset, disabled, onChangeValue }) {
 
   const handleInputChange = (event) => {
     const { value } = event.target;
-    if (onChangeValue) {
+    if (onChangeValue && !isNaN(value)) {
       onChangeValue(Math.abs(value));
     }
   };
