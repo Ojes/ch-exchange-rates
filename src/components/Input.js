@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const InputWrapper = styled.div`
@@ -38,22 +37,15 @@ const InputWrapper = styled.div`
 `;
 
 export function Input({ value, label, name, asset, disabled, onChangeValue }) {
-  const [inputValue, setInputValue] = useState("");
-
-  useEffect(() => {
-    setInputValue(value);
-  }, [value]);
-
   const handleOnlyNumber = (event) => {
     const { value } = event.target;
     if (isNaN(value)) {
-      event.target.value = inputValue;
+      event.target.value = value;
     }
   };
 
   const handleInputChange = (event) => {
     const { value } = event.target;
-    setInputValue(Math.abs(value));
     if (onChangeValue) {
       onChangeValue(Math.abs(value));
     }
@@ -68,7 +60,7 @@ export function Input({ value, label, name, asset, disabled, onChangeValue }) {
         id={`${name}-${label}`}
         name={name}
         disabled={disabled}
-        value={inputValue}
+        value={value}
         onInput={handleOnlyNumber}
         onChange={handleInputChange}
       />
