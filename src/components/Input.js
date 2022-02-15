@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Spinner } from "./Spinner";
 
 const InputWrapper = styled.div`
   align-items: flex-stretch;
@@ -37,15 +36,7 @@ const InputWrapper = styled.div`
   }
 `;
 
-export function Input({
-  value,
-  label,
-  name,
-  asset,
-  disabled,
-  onChangeValue,
-  loading,
-}) {
+export function Input({ value, label, name, asset, disabled, onChangeValue }) {
   const handleOnlyNumber = (event) => {
     const { value } = event.target;
     if (isNaN(value)) {
@@ -73,8 +64,7 @@ export function Input({
         onInput={handleOnlyNumber}
         onChange={handleInputChange}
       />
-      {/* {loading ? <Spinner /> : <span>{asset}</span>} */}
-      <Spinner />
+      <span>{asset}</span>
     </InputWrapper>
   );
 }

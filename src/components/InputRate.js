@@ -17,7 +17,6 @@ export function InputRate({ asset, operationType, orderType, quote }) {
         name="amount"
         asset={asset}
         value={amount}
-        loading={!quote}
         onChangeValue={calculatePrice}
       />
       <Input
@@ -25,7 +24,6 @@ export function InputRate({ asset, operationType, orderType, quote }) {
         name="price"
         asset="ARS"
         value={price}
-        loading={!quote}
         onChangeValue={calculateAmount}
       />
     </>
