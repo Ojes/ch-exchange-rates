@@ -22,6 +22,8 @@ The user needs to be able to see the Order Book containing the open orders. The 
 - Advance 2: Rates/quotes for the different assets must be taken from the Quote Endpoints listed below to show the user a suggested price.
 - Advance 3: Every order processed by the system must charge the user a fee of 1.5% and the accumulated amount needs to be shown in the topbar of the app.
 
+![Demo](demo.gif)
+
 
 # Getting Started with Create React App
 
