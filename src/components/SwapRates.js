@@ -28,6 +28,13 @@ const SubmitButton = styled(Button)`
   margin-top: 40px;
 `;
 
+const SpinnerWrapper = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: 250px;
+`;
+
 export function SwapRates() {
   const [operationType, setOperationType] = useState(OPERATION_TYPE.BUY);
   const [orderType, setOrderType] = useState(ORDER_TYPE.LIMIT);
@@ -132,7 +139,9 @@ export function SwapRates() {
           </SubmitButton>
         </form>
       ) : "quote" in assetQuote ? (
-        <Spinner />
+        <SpinnerWrapper>
+          <Spinner />
+        </SpinnerWrapper>
       ) : (
         <div>Opp we have a problem houston</div>
       )}
