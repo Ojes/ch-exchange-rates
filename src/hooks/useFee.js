@@ -8,8 +8,8 @@ export function useFee() {
 
   useEffect(() => {
     const feeTotal =
-      orders.reduce((counter, order) => counter + order.price, 0) * FEE_VALUE;
-    setFee(feeTotal);
+      orders.reduce((counter, order) => counter + +order.price, 0) * FEE_VALUE;
+    setFee(feeTotal.toFixed(2));
   }, [orders]);
 
   return fee;

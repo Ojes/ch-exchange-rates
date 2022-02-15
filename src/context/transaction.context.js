@@ -1,10 +1,5 @@
 import React, { useReducer } from "react";
-import {
-  FEE_VALUE,
-  ORDER_STATE,
-  SOCKET_CONNECTION,
-  SOCKET_MESSAGE,
-} from "../constants";
+import { ORDER_STATE, SOCKET_CONNECTION, SOCKET_MESSAGE } from "../constants";
 import { useSocket } from "../hooks/useSocket";
 
 export const TransactionContext = React.createContext({});

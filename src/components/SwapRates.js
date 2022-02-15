@@ -15,6 +15,7 @@ import { TransactionContext } from "../context/transaction.context";
 import { getOperationNameById } from "../helpers";
 import { useSocket } from "../hooks/useSocket";
 import { Button, ButtonGroup, ButtonLink } from "./Buttons";
+import { Spinner } from "./Spinner";
 import { Input } from "./Input";
 import { InputRate } from "./InputRate";
 
@@ -110,25 +111,31 @@ export function SwapRates() {
           </div>
         </Subheader>
       </header>
-      <form onSubmit={handleSubmit}>
-        <Input
-          label={`1 ${asset}`}
-          name="asset_price"
-          asset="ARS"
-          disabled={true}
-          value={assetQuote.quote}
-        />
-        <InputRate
-          asset={asset}
-          quote={assetQuote.quote}
-          operationType={operationType}
-          orderType={orderType}
-        />
+      {assetQuote.quote ? (
+        <form onSubmit={handleSubmit}>
+          <Input
+            label={`1 ${asset}`}
+            name="asset_price"
+            asset="ARS"
+            disabled={true}
+            value={assetQuote.quote}
+          />
+          <InputRate
+            asset={asset}
+            quote={assetQuote.quote}
+            operationType={operationType}
+            orderType={orderType}
+          />
 
-        <SubmitButton isBuy={operationType === OPERATION_TYPE.BUY}>
-          {getOperationNameById(operationType)} {asset}
-        </SubmitButton>
-      </form>
+          <SubmitButton isBuy={operationType === OPERATION_TYPE.BUY}>
+            {getOperationNameById(operationType)} {asset}
+          </SubmitButton>
+        </form>
+      ) : "quote" in assetQuote ? (
+        <Spinner />
+      ) : (
+        <div>Opp we have a problem houston</div>
+      )}
     </section>
   );
 }
