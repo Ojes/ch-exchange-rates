@@ -7,7 +7,8 @@ export function useSocket(options) {
 
   useEffect(() => {
     socket.current.connect(connectionName, subscribe);
-    return socket.current.disconnect;
+    const disconnect = socket.current.disconnect;
+    return () => disconnect(connectionName, subscribe);
     // eslint-disable-next-line
   }, []);
 

@@ -116,6 +116,7 @@ export function SwapRates() {
           name="asset_price"
           asset="ARS"
           disabled={true}
+          loading={!assetQuote.quote}
           value={assetQuote.quote}
         />
         <InputRate

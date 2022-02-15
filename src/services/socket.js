@@ -14,11 +14,11 @@ export function Socket() {
   let _listeners = {};
   let _timerId;
 
-  this.connect = (message, callback) => {
+  this.connect = (name, callback) => {
     if (_listeners) {
-      let listeners = _listeners[message];
+      let listeners = _listeners[name];
       if (!listeners) {
-        listeners = _listeners[message] = [];
+        listeners = _listeners[name] = [];
       }
       listeners.push(callback);
     }
@@ -37,9 +37,11 @@ export function Socket() {
     }
   };
 
-  this.disconnect = () => {
-    _listeners = null;
-    clearInterval(_timerId);
+  this.disconnect = (name, callback) => {
+    _listeners[name] = _listeners[name].filter(
+      (listener) => listener === callback
+    );
+    if (SOCKET_CONNECTION.QUOTE === name) clearInterval(_timerId);
   };
 
   function dispatch(message, data) {

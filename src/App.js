@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { FeeBar } from "./components/FeeBar";
 import { Orders } from "./components/Orders";
 import { SwapRates } from "./components/SwapRates";
 import { TransactionProvider } from "./context/transaction.context";
@@ -12,6 +13,7 @@ function App() {
   return (
     <TransactionProvider>
       <ContainerWrapper>
+        <FeeBar />
         <SwapRates></SwapRates>
         <Orders></Orders>
       </ContainerWrapper>

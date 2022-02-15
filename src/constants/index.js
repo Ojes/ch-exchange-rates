@@ -28,3 +28,5 @@ export const SOCKET_CONNECTION = {
   ORDER: "order",
   QUOTE: "quote",
 };
+
+export const FEE_VALUE = 0.015;

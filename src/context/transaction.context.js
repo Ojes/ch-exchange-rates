@@ -1,5 +1,10 @@
 import React, { useReducer } from "react";
-import { ORDER_STATE, SOCKET_CONNECTION, SOCKET_MESSAGE } from "../constants";
+import {
+  FEE_VALUE,
+  ORDER_STATE,
+  SOCKET_CONNECTION,
+  SOCKET_MESSAGE,
+} from "../constants";
 import { useSocket } from "../hooks/useSocket";
 
 export const TransactionContext = React.createContext({});
@@ -64,7 +69,13 @@ export const TransactionProvider = ({ children }) => {
   };
 
   return (
-    <TransactionContext.Provider value={{ openOrder, orders: state.orders }}>
+    <TransactionContext.Provider
+      value={{
+        openOrder,
+        orders: state.orders,
+        orderState: ORDER_STATE.OPEN,
+      }}
+    >
       {children}
     </TransactionContext.Provider>
   );
